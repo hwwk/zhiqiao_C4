@@ -1,0 +1,27 @@
+{
+  "authors": [
+    {
+      "name": "Andrej Karpathy",
+      "url": "https://www.youtube.com/@AndrejKarpathy",
+      "category": "Video",
+      "enabled": true
+    },
+    
+    {
+      "name": "Simon Willison's Blog",
+      "url": "https://simonwillison.net/",
+      "category": "News",
+      "enabled": true
+    },
+    {
+      "name": "Lex Fridman Podcast",
+      "url": "https://lexfridman.com/podcast/",
+      "category": "Podcast",
+      "enabled": true
+    }
+  ],
+  "settings": {
+    "check_interval_minutes": 60,
+    "max_items_per_author": 10
+  }
+}

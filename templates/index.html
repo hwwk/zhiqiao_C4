@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News - 知桥 C4</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- 顶部标题区 -->
+    <header class="header">
+        <div class="container">
+            <h1 class="title">AI News</h1>
+            <p class="subtitle">最后采集时间: {{ collected_at }}</p>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <div class="container main-content">
+        <!-- 左侧分类列表 -->
+        <aside class="sidebar">
+            <h2 class="sidebar-title">分类</h2>
+            <nav class="category-nav">
+                <button class="category-item active" data-category="all">
+                    <span class="category-icon">📋</span>
+                    <span class="category-name">全部</span>
+                    <span class="category-count">{{ total_items }}</span>
+                </button>
+                {% for category in categories %}
+                <button class="category-item" data-category="{{ category.name }}">
+                    <span class="category-icon">{{ category.icon }}</span>
+                    <span class="category-name">{{ category.name }}</span>
+                    <span class="category-count">{{ category.count }}</span>
+                </button>
+                {% endfor %}
+            </nav>
+        </aside>
+
+        <!-- 右侧内容卡片区 -->
+        <main class="content-area">
+            <div class="content-header">
+                <h2 class="content-title">最新内容</h2>
+                <p class="content-count">共 <span id="current-count">{{ total_items }}</span> 条</p>
+            </div>
+
+            <div class="cards-grid" id="cards-container">
+                {% for item in items %}
+                <article class="card" data-category="{{ item.category }}">
+                    <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" class="card-link">
+                        {% if item.thumbnail_url or item.cover_image_url %}
+                        <!-- 有封面图的卡片 -->
+                        <div class="card-image-wrapper">
+                            <img src="{{ item.thumbnail_url or item.cover_image_url }}"
+                                 alt="{{ item.title }}"
+                                 class="card-image"
+                                 loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">{{ item.title }}</h3>
+                            <p class="card-description">{{ item.description | truncate_desc }}</p>
+                            <div class="card-meta">
+                                <span class="card-author">{{ item.author_name }}</span>
+                                <span class="card-separator">•</span>
+                                <span class="card-date">{{ item.formatted_date }}</span>
+                            </div>
+                        </div>
+                        {% else %}
+                        <!-- 无封面图的卡片，使用渐变背景 -->
+                        <div class="card-gradient" data-category="{{ item.category }}">
+                            <h3 class="card-title-centered">{{ item.title }}</h3>
+                        </div>
+                        <div class="card-content">
+                            <p class="card-description">{{ item.description | truncate_desc }}</p>
+                            <div class="card-meta">
+                                <span class="card-author">{{ item.author_name }}</span>
+                                <span class="card-separator">•</span>
+                                <span class="card-date">{{ item.formatted_date }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </a>
+                </article>
+                {% endfor %}
+            </div>
+
+            {% if total_items == 0 %}
+            <div class="empty-state">
+                <p class="empty-icon">📭</p>
+                <p class="empty-text">暂无内容</p>
+                <p class="empty-hint">请先运行采集程序获取数据</p>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
